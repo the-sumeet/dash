@@ -22,7 +22,7 @@ func main() {
 			Handler: application.AssetFileServerFS(assets),
 		},
 		Mac: application.MacOptions{
-			ActivationPolicy:                            application.ActivationPolicyAccessory,
+			ActivationPolicy: application.ActivationPolicyAccessory,
 			ApplicationShouldTerminateAfterLastWindowClosed: false,
 		},
 	})
@@ -61,12 +61,31 @@ func main() {
 		e.Cancel()
 	})
 
+	// Add app window
+	addAppWIndow := app.Window.NewWithOptions(application.WebviewWindowOptions{
+		Name:   "Applications",
+		Title:  "Application",
+		Width:  700,
+		Height: 500,
+		Hidden: true,
+		URL:    "/apps",
+	})
+	addAppWIndow.RegisterHook(events.Common.WindowClosing, func(e *application.WindowEvent) {
+		addAppWIndow.Hide()
+		e.Cancel()
+	})
+
 	// Right-click context menu
 	menu := app.NewMenu()
 	menu.Add("Settings...").OnClick(func(ctx *application.Context) {
 		settingsWindow.Show()
 		settingsWindow.Focus()
 		settingsWindow.Center()
+	})
+	menu.Add("Apps...").OnClick(func(ctx *application.Context) {
+		addAppWIndow.Show()
+		addAppWIndow.Focus()
+		addAppWIndow.Center()
 	})
 	menu.AddSeparator()
 	menu.Add("Quit").OnClick(func(ctx *application.Context) {
