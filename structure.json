@@ -1,0 +1,10 @@
+[
+    {
+        "icon": "foo",
+        "command": "ls",
+        "args": ["-la"],
+        "listItemStructure": {
+            
+        }
+    }
+]
