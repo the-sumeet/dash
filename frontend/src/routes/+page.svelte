@@ -1,38 +1,43 @@
-<div class="popup">
-	<h2>Tray App</h2>
-	<ul>
-		<li>Item 1</li>
-		<li>Item 2</li>
-		<li>Item 3</li>
-	</ul>
+<script lang="ts">
+	import { GetApps } from '$bindings/changeme/appservice.js';
+	import type { App } from '$bindings/changeme/models.js';
+	import Icon from '@iconify/svelte';
+	import { Button } from '$lib/components/ui/button/index.js';
+	let apps = $state<App[]>([]);
+	let activeIndex = $state(0);
+
+	async function loadApps() {
+		apps = await GetApps();
+	}
+
+	loadApps();
+</script>
+
+<div class="flex h-screen w-screen">
+	<!-- Apps -->
+	<div class="flex flex-col gap-1 overflow-auto border-r p-2">
+		{#each apps as app, i}
+			<Button class="{activeIndex == i ? "bg-primary/30" : ""}" variant="secondary" size="icon" aria-label="Submit" onclick={() => (activeIndex = i)}>
+				<Icon icon={app.icon} class="h-4 w-4" />
+			</Button>
+
+			<!-- <button
+				class="flex items-center justify-center rounded-lg p-2 transition-colors {activeIndex === i
+					? 'bg-primary text-primary-foreground'
+					: 'hover:bg-muted'}"
+				title={app.name}
+				onclick={() => (activeIndex = i)}
+			>
+			</button> -->
+		{/each}
+	</div>
+
+	<!-- Content -->
+	<div class="flex-1 overflow-auto p-4">
+		{#if apps.length === 0}
+			<p class="text-sm text-muted-foreground">No apps configured.</p>
+		{:else if apps[activeIndex]}
+			<p class="text-sm text-muted-foreground">{apps[activeIndex].name}</p>
+		{/if}
+	</div>
 </div>
-
-<style>
-	.popup {
-		padding: 16px;
-		font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-		color: #333;
-	}
-
-	h2 {
-		margin: 0 0 12px;
-		font-size: 16px;
-		font-weight: 600;
-	}
-
-	ul {
-		list-style: none;
-		margin: 0;
-		padding: 0;
-	}
-
-	li {
-		padding: 8px 12px;
-		border-radius: 6px;
-		cursor: pointer;
-	}
-
-	li:hover {
-		background: #f0f0f0;
-	}
-</style>
