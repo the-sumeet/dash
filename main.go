@@ -47,8 +47,35 @@ func main() {
 		e.Cancel()
 	})
 
+	// Settings window (full-size, opened from right-click menu)
+	settingsWindow := app.Window.NewWithOptions(application.WebviewWindowOptions{
+		Name:   "Settings",
+		Title:  "Tray Settings",
+		Width:  700,
+		Height: 500,
+		Hidden: true,
+		URL:    "/settings",
+	})
+	settingsWindow.RegisterHook(events.Common.WindowClosing, func(e *application.WindowEvent) {
+		settingsWindow.Hide()
+		e.Cancel()
+	})
+
+	// Right-click context menu
+	menu := app.NewMenu()
+	menu.Add("Settings...").OnClick(func(ctx *application.Context) {
+		settingsWindow.Show()
+		settingsWindow.Focus()
+		settingsWindow.Center()
+	})
+	menu.AddSeparator()
+	menu.Add("Quit").OnClick(func(ctx *application.Context) {
+		app.Quit()
+	})
+
 	systemTray := app.SystemTray.New()
 	systemTray.SetIcon(icon)
+	systemTray.SetMenu(menu)
 	systemTray.AttachWindow(window).WindowOffset(5)
 
 	err := app.Run()
