@@ -5,8 +5,12 @@
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import IconPicker from '$lib/components/icon-picker.svelte';
+	import { SaveApp } from '$bindings/changeme/appservice.js';
+	import { App } from '$bindings/changeme/models.js';
 
 	let appName = $state('');
+	let saving = $state(false);
+	let error = $state('');
 	let appIcon = $state('');
 	let command = $state('');
 	let argument = $state('');
@@ -52,6 +56,26 @@
 
 	function isValid() {
 		return appIcon.trim() !== '' && appName.trim() !== '' && command.trim() !== '';
+	}
+
+	async function handleSave() {
+		if (!isValid() || saving) return;
+		saving = true;
+		error = '';
+		try {
+			const app = new App({
+				name: appName.trim(),
+				icon: appIcon.trim(),
+				command: command.trim(),
+				args: [...args]
+			});
+			await SaveApp(app);
+			window.location.href = '/apps';
+		} catch (e: any) {
+			error = e?.message ?? 'Failed to save';
+		} finally {
+			saving = false;
+		}
 	}
 </script>
 
@@ -157,7 +181,13 @@
 			</Card.Content>
 		</Card.Root>
 
-		<Button class="w-full" disabled={!isValid()}>Save</Button>
+		{#if error}
+			<p class="text-sm text-destructive">{error}</p>
+		{/if}
+
+		<Button class="w-full" disabled={!isValid() || saving} onclick={handleSave}>
+			{saving ? 'Saving...' : 'Save'}
+		</Button>
 
 		<Button class="w-full" variant="secondary" href="/apps">Cancel</Button>
 	</div>

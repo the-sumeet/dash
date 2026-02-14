@@ -9,6 +9,9 @@ const config = {
 			fallback: 'index.html',
 			pages: "dist"
 		}),
+		alias: {
+			'$bindings': 'bindings'
+		},
 	}
 };
 

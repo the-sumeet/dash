@@ -15,9 +15,14 @@ var assets embed.FS
 var icon []byte
 
 func main() {
+	appService := NewAppService()
+
 	app := application.New(application.Options{
 		Name:        "tray",
 		Description: "A system tray app",
+		Services: []application.Service{
+			application.NewService(appService),
+		},
 		Assets: application.AssetOptions{
 			Handler: application.AssetFileServerFS(assets),
 		},
