@@ -2,7 +2,9 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"sync"
 )
@@ -67,6 +69,22 @@ func (s *AppService) SaveApp(app App) error {
 	defer s.mu.Unlock()
 	s.apps = append(s.apps, app)
 	return s.save()
+}
+
+func (s *AppService) RunApp(index int) (string, error) {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+	if index < 0 || index >= len(s.apps) {
+		return "", fmt.Errorf("invalid app index: %d", index)
+	}
+	app := s.apps[index]
+	cmd := exec.Command(app.Command, app.Args...)
+	output, err := cmd.CombinedOutput()
+	fmt.Println(string(output))
+	if err != nil {
+		return string(output), fmt.Errorf("%s: %w", string(output), err)
+	}
+	return string(output), nil
 }
 
 func (s *AppService) DeleteApp(index int) error {

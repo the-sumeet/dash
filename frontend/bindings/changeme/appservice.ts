@@ -19,6 +19,10 @@ export function GetApps(): $CancellablePromise<$models.App[]> {
     });
 }
 
+export function RunApp(index: number): $CancellablePromise<string> {
+    return $Call.ByID(1361365550, index);
+}
+
 export function SaveApp(app: $models.App): $CancellablePromise<void> {
     return $Call.ByID(3881368978, app);
 }
