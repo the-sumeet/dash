@@ -4,10 +4,13 @@
 	import Icon from '@iconify/svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import RefreshCw from '@lucide/svelte/icons/refresh-cw';
+	import * as Card from '$lib/components/ui/card/index.js';
+	import { marked } from 'marked';
+	import { Browser } from '@wailsio/runtime';
 
 	let apps = $state<App[]>([]);
 	let activeIndex = $state(0);
-	let output = $state('');
+	let items = $state<{ title?: string; subtitle?: string; markdown?: string; href?: string }[]>([]);
 	let loading = $state(false);
 	let error = $state('');
 
@@ -20,11 +23,11 @@
 
 	async function runCommand(index: number) {
 		loading = true;
-		output = '';
+		items = [];
 		error = '';
 		try {
-			output = await RunApp(index);
-			console.log('Command output:', output);
+			const output = await RunApp(index);
+			items = JSON.parse(output);
 		} catch (e: any) {
 			error = e?.message ?? 'Command failed';
 		} finally {
@@ -72,15 +75,38 @@
 				</Button>
 			</div>
 		{/if}
-		<div class="flex-1 overflow-auto p-3">
+		<div class="flex-1 overflow-auto flex flex-col gap-2 p-2">
 			{#if apps.length === 0}
-				<p class="text-sm text-muted-foreground">No apps configured.</p>
+				<p class="p-3 text-sm text-muted-foreground">No apps configured.</p>
 			{:else if loading}
-				<p class="text-sm text-muted-foreground">Running...</p>
+				<p class="p-3 text-sm text-muted-foreground">Running...</p>
 			{:else if error}
-				<pre class="whitespace-pre-wrap text-sm text-destructive">{error}</pre>
+				<pre class="p-3 text-sm whitespace-pre-wrap text-destructive">{error}</pre>
 			{:else}
-				<pre class="whitespace-pre-wrap font-mono text-sm">{output}</pre>
+				{#each items as item}
+					<Card.Root
+						class="py-3 {item.href ? 'cursor-pointer hover:bg-muted/50 transition-colors' : ''}"
+						onclick={item.href ? () => Browser.OpenURL(item.href) : undefined}
+					>
+						{#if item.title?.trim() || item.subtitle?.trim()}
+							<Card.Header class="px-3">
+								{#if item.title?.trim()}
+									<Card.Title class="text-sm font-bold">{item.title}</Card.Title>
+								{/if}
+								{#if item.subtitle?.trim()}
+									<Card.Description>{item.subtitle}</Card.Description>
+								{/if}
+							</Card.Header>
+						{/if}
+						{#if item.markdown?.trim()}
+						<Card.Content>
+							<div class="prose prose-sm dark:prose-invert max-w-none">
+								{@html marked(item.markdown)}
+							</div>
+						</Card.Content>
+						{/if}
+					</Card.Root>
+				{/each}
 			{/if}
 		</div>
 	</div>
