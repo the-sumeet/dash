@@ -33,7 +33,7 @@ func main() {
 	})
 
 	window := app.Window.NewWithOptions(application.WebviewWindowOptions{
-		Width:         300,
+		Width:         512,
 		Height:        400,
 		Frameless:     true,
 		AlwaysOnTop:   true,
