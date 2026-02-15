@@ -3,28 +3,32 @@
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Unused imports
-import { Call as $Call, CancellablePromise as $CancellablePromise, Create as $Create } from "@wailsio/runtime";
+import {
+	Call as $Call,
+	CancellablePromise as $CancellablePromise,
+	Create as $Create
+} from '@wailsio/runtime';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Unused imports
-import * as $models from "./models.js";
+import * as $models from './models.js';
 
 export function DeleteApp(index: number): $CancellablePromise<void> {
-    return $Call.ByID(1269295324, index);
+	return $Call.ByID(1269295324, index);
 }
 
 export function GetApps(): $CancellablePromise<$models.App[]> {
-    return $Call.ByID(1862096634).then(($result: any) => {
-        return $$createType1($result);
-    });
+	return $Call.ByID(1862096634).then(($result: any) => {
+		return $$createType1($result);
+	});
 }
 
 export function RunApp(index: number): $CancellablePromise<string> {
-    return $Call.ByID(1361365550, index);
+	return $Call.ByID(1361365550, index);
 }
 
 export function SaveApp(app: $models.App): $CancellablePromise<void> {
-    return $Call.ByID(3881368978, app);
+	return $Call.ByID(3881368978, app);
 }
 
 // Private type creation functions

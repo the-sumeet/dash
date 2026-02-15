@@ -108,22 +108,23 @@
 				</div>
 
 				<div class="flex flex-col gap-1.5">
-                    <Label>Arguments</Label>
+					<Label>Arguments</Label>
 
-				<div class="flex w-full items-center gap-2">
-					<Input
-						class="font-mono"
-						bind:value={argument}
-						type="text"
-						placeholder="-l"
-						autocapitalize="off"
-						autocorrect="off"
-						spellcheck="false"
-					/>
-					<Button onclick={() => addArgument()} type="submit" variant="outline">Add argument</Button
-					>
+					<div class="flex w-full items-center gap-2">
+						<Input
+							class="font-mono"
+							bind:value={argument}
+							type="text"
+							placeholder="-l"
+							autocapitalize="off"
+							autocorrect="off"
+							spellcheck="false"
+						/>
+						<Button onclick={() => addArgument()} type="submit" variant="outline"
+							>Add argument</Button
+						>
+					</div>
 				</div>
-                </div>
 				<div class="flex flex-wrap gap-2">
 					{#each args as arg, i (i)}
 						<button

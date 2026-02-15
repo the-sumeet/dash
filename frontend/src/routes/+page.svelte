@@ -75,7 +75,7 @@
 				</Button>
 			</div>
 		{/if}
-		<div class="flex-1 overflow-auto flex flex-col gap-2 p-2">
+		<div class="flex flex-1 flex-col gap-2 overflow-auto p-2">
 			{#if apps.length === 0}
 				<p class="p-3 text-sm text-muted-foreground">No apps configured.</p>
 			{:else if loading}
@@ -85,7 +85,7 @@
 			{:else}
 				{#each items as item}
 					<Card.Root
-						class="py-3 {item.href ? 'cursor-pointer hover:bg-muted/50 transition-colors' : ''}"
+						class="py-3 {item.href ? 'cursor-pointer transition-colors hover:bg-muted/50' : ''}"
 						onclick={item.href ? () => Browser.OpenURL(item.href) : undefined}
 					>
 						{#if item.title?.trim() || item.subtitle?.trim()}
@@ -99,11 +99,11 @@
 							</Card.Header>
 						{/if}
 						{#if item.markdown?.trim()}
-						<Card.Content>
-							<div class="prose prose-sm dark:prose-invert max-w-none">
-								{@html marked(item.markdown)}
-							</div>
-						</Card.Content>
+							<Card.Content>
+								<div class="prose prose-sm max-w-none dark:prose-invert">
+									{@html marked(item.markdown)}
+								</div>
+							</Card.Content>
 						{/if}
 					</Card.Root>
 				{/each}

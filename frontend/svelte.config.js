@@ -7,11 +7,11 @@ const config = {
 		// See https://svelte.dev/docs/kit/adapters for more information about adapters.
 		adapter: adapter({
 			fallback: 'index.html',
-			pages: "dist"
+			pages: 'dist'
 		}),
 		alias: {
-			'$bindings': 'bindings'
-		},
+			$bindings: 'bindings'
+		}
 	}
 };
 

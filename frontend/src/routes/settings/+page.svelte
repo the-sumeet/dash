@@ -9,8 +9,8 @@
 			<Tabs.Trigger value="apps">Apps</Tabs.Trigger>
 			<Tabs.Trigger value="settings">Settings</Tabs.Trigger>
 		</Tabs.List>
-		<Tabs.Content value="apps" class="flex flex-col items-center w-full">
-			<div class="flex-1 max-w-xl w-full">
+		<Tabs.Content value="apps" class="flex w-full flex-col items-center">
+			<div class="w-full max-w-xl flex-1">
 				<Button href="/new" class="w-full" variant="secondary">Add App</Button>
 			</div>
 		</Tabs.Content>

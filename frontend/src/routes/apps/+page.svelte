@@ -4,7 +4,7 @@
 	import { GetApps, DeleteApp } from '$bindings/changeme/appservice.js';
 	import type { App } from '$bindings/changeme/models.js';
 	import Icon from '@iconify/svelte';
-    import Trash from '@lucide/svelte/icons/trash';
+	import Trash from '@lucide/svelte/icons/trash';
 
 	let apps = $state<App[]>([]);
 	let loading = $state(true);
@@ -28,8 +28,7 @@
 		{#if loading}
 			<p class="text-sm text-muted-foreground">Loading...</p>
 		{:else if apps.length === 0}
-        			<Button href="/apps/new" class="w-full" variant="secondary">Add App</Button>
-
+			<Button href="/apps/new" class="w-full" variant="secondary">Add App</Button>
 		{:else}
 			<Button href="/apps/new" class="w-full" variant="secondary">Add App</Button>
 
@@ -45,11 +44,16 @@
 							</p>
 						</div>
 					</Card.Content>
-                    <Card.Footer class="hidden group-hover:flex">
-                        <Button variant="destructive" size="icon" aria-label="Delete" onclick={() => handleDelete(i)}>
+					<Card.Footer class="hidden group-hover:flex">
+						<Button
+							variant="destructive"
+							size="icon"
+							aria-label="Delete"
+							onclick={() => handleDelete(i)}
+						>
 							<Trash />
 						</Button>
-                    </Card.Footer>
+					</Card.Footer>
 				</Card.Root>
 			{/each}
 		{/if}
