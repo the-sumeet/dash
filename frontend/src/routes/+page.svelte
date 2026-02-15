@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { GetApps, RunApp } from '$bindings/changeme/appservice.js';
+	import { GetApps, RunApp, RefreshApp } from '$bindings/changeme/appservice.js';
 	import type { App } from '$bindings/changeme/models.js';
 	import Icon from '@iconify/svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
@@ -27,6 +27,20 @@
 		error = '';
 		try {
 			const output = await RunApp(index);
+			items = JSON.parse(output);
+		} catch (e: any) {
+			error = e?.message ?? 'Command failed';
+		} finally {
+			loading = false;
+		}
+	}
+
+	async function refreshCommand(index: number) {
+		loading = true;
+		items = [];
+		error = '';
+		try {
+			const output = await RefreshApp(index);
 			items = JSON.parse(output);
 		} catch (e: any) {
 			error = e?.message ?? 'Command failed';
@@ -69,7 +83,7 @@
 					size="icon"
 					class="h-7 w-7"
 					disabled={loading}
-					onclick={() => runCommand(activeIndex)}
+					onclick={() => refreshCommand(activeIndex)}
 				>
 					<RefreshCw class="h-3.5 w-3.5 {loading ? 'animate-spin' : ''}" />
 				</Button>
