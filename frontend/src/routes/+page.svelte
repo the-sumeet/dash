@@ -7,6 +7,7 @@
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { marked } from 'marked';
 	import { Browser } from '@wailsio/runtime';
+	import { onMount } from 'svelte';
 
 	let apps = $state<App[]>([]);
 	let activeIndex = $state(0);
@@ -15,11 +16,22 @@
 	let error = $state('');
 
 	async function loadApps() {
-		apps = await GetApps();
-		if (apps.length > 0) {
-			runCommand(0);
+		const updated = await GetApps();
+		const changed = updated.length !== apps.length || updated.some((a, i) => a.name !== apps[i]?.name);
+		apps = updated;
+		if (changed && apps.length > 0) {
+			activeIndex = Math.min(activeIndex, apps.length - 1);
+			runCommand(activeIndex);
 		}
 	}
+
+	onMount(() => {
+		const handler = () => {
+			if (!document.hidden) loadApps();
+		};
+		document.addEventListener('visibilitychange', handler);
+		return () => document.removeEventListener('visibilitychange', handler);
+	});
 
 	async function runCommand(index: number) {
 		loading = true;
