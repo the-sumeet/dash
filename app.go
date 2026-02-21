@@ -97,7 +97,6 @@ func (s *AppService) RunApp(index int) (string, error) {
 
 	cmd := exec.Command(app.Command, app.Args...)
 	output, err := cmd.CombinedOutput()
-	fmt.Println(string(output))
 	if err != nil {
 		return string(output), fmt.Errorf("%s: %w", string(output), err)
 	}
