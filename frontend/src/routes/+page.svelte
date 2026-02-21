@@ -125,7 +125,7 @@
 							</Card.Header>
 						{/if}
 						{#if item.markdown?.trim()}
-							<Card.Content>
+							<Card.Content class="px-3 ">
 								<div
 									class="border rounded-xl p-2 max-h-48 overflow-y-auto prose prose-sm max-w-none dark:prose-invert"
 									onclick={(e) => {
