@@ -31,6 +31,10 @@ export function SaveApp(app: $models.App): $CancellablePromise<void> {
     return $Call.ByID(3881368978, app);
 }
 
+export function UpdateApp(index: number, app: $models.App): $CancellablePromise<void> {
+    return $Call.ByID(70095446, index, app);
+}
+
 // Private type creation functions
 const $$createType0 = $models.App.createFrom;
 const $$createType1 = $Create.Array($$createType0);

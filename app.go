@@ -116,6 +116,17 @@ func (s *AppService) RefreshApp(index int) (string, error) {
 	return s.RunApp(index)
 }
 
+func (s *AppService) UpdateApp(index int, app App) error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	if index < 0 || index >= len(s.apps) {
+		return fmt.Errorf("invalid app index: %d", index)
+	}
+	s.apps[index] = app
+	delete(s.cache, index)
+	return s.save()
+}
+
 func (s *AppService) DeleteApp(index int) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()

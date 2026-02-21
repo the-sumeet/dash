@@ -5,6 +5,7 @@
 	import type { App } from '$bindings/changeme/models.js';
 	import Icon from '@iconify/svelte';
 	import Trash from '@lucide/svelte/icons/trash';
+	import Pencil from '@lucide/svelte/icons/pencil';
 
 	let apps = $state<App[]>([]);
 	let loading = $state(true);
@@ -44,7 +45,10 @@
 							</p>
 						</div>
 					</Card.Content>
-					<Card.Footer class="hidden group-hover:flex">
+					<Card.Footer class="hidden gap-2 group-hover:flex">
+						<Button variant="outline" size="icon" aria-label="Edit" href="/apps/{i}">
+							<Pencil />
+						</Button>
 						<Button
 							variant="destructive"
 							size="icon"
