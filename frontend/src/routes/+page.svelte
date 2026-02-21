@@ -126,7 +126,17 @@
 						{/if}
 						{#if item.markdown?.trim()}
 							<Card.Content>
-								<div class="prose prose-sm max-w-none dark:prose-invert">
+								<div
+									class="border rounded-xl p-2 max-h-48 overflow-y-auto prose prose-sm max-w-none dark:prose-invert"
+									onclick={(e) => {
+										e.stopPropagation();
+										const a = (e.target as HTMLElement).closest('a');
+										if (a?.href) {
+											e.preventDefault();
+											Browser.OpenURL(a.href);
+										}
+									}}
+								>
 									{@html marked(item.markdown)}
 								</div>
 							</Card.Content>
