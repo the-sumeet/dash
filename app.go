@@ -32,7 +32,7 @@ type AppService struct {
 
 func NewAppService() *AppService {
 	configDir, _ := os.UserConfigDir()
-	dir := filepath.Join(configDir, "tray")
+	dir := filepath.Join(configDir, "dash")
 	os.MkdirAll(dir, 0755)
 
 	svc := &AppService{

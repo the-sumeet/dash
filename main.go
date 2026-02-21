@@ -18,8 +18,8 @@ func main() {
 	appService := NewAppService()
 
 	app := application.New(application.Options{
-		Name:        "tray",
-		Description: "A system tray app",
+		Name:        "Dash",
+		Description: "A menubar dashboard",
 		Services: []application.Service{
 			application.NewService(appService),
 		},
@@ -55,7 +55,7 @@ func main() {
 	// Settings window (full-size, opened from right-click menu)
 	settingsWindow := app.Window.NewWithOptions(application.WebviewWindowOptions{
 		Name:   "Settings",
-		Title:  "Tray Settings",
+		Title:  "Dash Settings",
 		Width:  700,
 		Height: 500,
 		Hidden: true,
