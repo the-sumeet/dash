@@ -52,22 +52,8 @@ func main() {
 		e.Cancel()
 	})
 
-	// Settings window (full-size, opened from right-click menu)
-	settingsWindow := app.Window.NewWithOptions(application.WebviewWindowOptions{
-		Name:   "Settings",
-		Title:  "Dash Settings",
-		Width:  700,
-		Height: 500,
-		Hidden: true,
-		URL:    "/settings",
-	})
-	settingsWindow.RegisterHook(events.Common.WindowClosing, func(e *application.WindowEvent) {
-		settingsWindow.Hide()
-		e.Cancel()
-	})
-
 	// Add app window
-	addAppWIndow := app.Window.NewWithOptions(application.WebviewWindowOptions{
+	addAppWindow := app.Window.NewWithOptions(application.WebviewWindowOptions{
 		Name:   "Applications",
 		Title:  "Application",
 		Width:  700,
@@ -75,22 +61,17 @@ func main() {
 		Hidden: true,
 		URL:    "/apps",
 	})
-	addAppWIndow.RegisterHook(events.Common.WindowClosing, func(e *application.WindowEvent) {
-		addAppWIndow.Hide()
+	addAppWindow.RegisterHook(events.Common.WindowClosing, func(e *application.WindowEvent) {
+		addAppWindow.Hide()
 		e.Cancel()
 	})
 
 	// Right-click context menu
 	menu := app.NewMenu()
-	menu.Add("Settings...").OnClick(func(ctx *application.Context) {
-		settingsWindow.Show()
-		settingsWindow.Focus()
-		settingsWindow.Center()
-	})
 	menu.Add("Apps...").OnClick(func(ctx *application.Context) {
-		addAppWIndow.Show()
-		addAppWIndow.Focus()
-		addAppWIndow.Center()
+		addAppWindow.Show()
+		addAppWindow.Focus()
+		addAppWindow.Center()
 	})
 	menu.AddSeparator()
 	menu.Add("Quit").OnClick(func(ctx *application.Context) {

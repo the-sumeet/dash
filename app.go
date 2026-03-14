@@ -69,7 +69,7 @@ func (s *AppService) save() error {
 func (s *AppService) GetApps() []App {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
-	return s.apps
+	return append([]App{}, s.apps...)
 }
 
 func (s *AppService) SaveApp(app App) error {
@@ -96,16 +96,17 @@ func (s *AppService) RunApp(index int) (string, error) {
 	s.mu.RUnlock()
 
 	cmd := exec.Command(app.Command, app.Args...)
-	output, err := cmd.CombinedOutput()
+	raw, err := cmd.CombinedOutput()
+	out := string(raw)
 	if err != nil {
-		return string(output), fmt.Errorf("%s: %w", string(output), err)
+		return out, fmt.Errorf("%s: %w", out, err)
 	}
 
 	s.mu.Lock()
-	s.cache[index] = cachedOutput{output: string(output), time: time.Now()}
+	s.cache[index] = cachedOutput{output: out, time: time.Now()}
 	s.mu.Unlock()
 
-	return string(output), nil
+	return out, nil
 }
 
 func (s *AppService) RefreshApp(index int) (string, error) {
